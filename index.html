@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empfangsbestätigung</title>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1{
+    color:#333;
+}
+
+#signature-pad{
+    border:2px solid #333;
+    border-radius:10px;
+    width:100%;
+    height:250px;
+}
+
+button{
+    padding:12px 20px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+#clearBtn{
+    background:#ff9800;
+    color:white;
+}
+
+#submitBtn{
+    background:#4caf50;
+    color:white;
+}
+
+#success{
+    display:none;
+    padding:20px;
+    background:#e8f5e9;
+    border-radius:10px;
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<h1>Empfangsbestätigung</h1>
+
+<p>Bitte hier unterschreiben:</p>
+
+<canvas id="signature-pad"></canvas>
+
+<br>
+
+<button id="clearBtn">Löschen</button>
+<button id="submitBtn">Bestätigen</button>
+
+<div id="success">
+    <h2>✓ Vielen Dank!</h2>
+    <p>Ihre Unterschrift wurde erfolgreich erfasst.</p>
+    <p>Viel Spaß und einen schönen Tag!</p>
+</div>
+
+<script>
+const canvas = document.getElementById('signature-pad');
+
+function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = 250;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const signaturePad = new SignaturePad(canvas);
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+    signaturePad.clear();
+});
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+
+    if(signaturePad.isEmpty()){
+        alert("Bitte zuerst unterschreiben.");
+        return;
+    }
+
+    const signatureImage = signaturePad.toDataURL();
+
+    console.log("Unterschrift gespeichert:", signatureImage);
+
+    document.getElementById("success").style.display = "block";
+
+    canvas.style.display = "none";
+    document.getElementById("clearBtn").style.display = "none";
+    document.getElementById("submitBtn").style.display = "none";
+});
+</script>
+
+</body>
+</html>
